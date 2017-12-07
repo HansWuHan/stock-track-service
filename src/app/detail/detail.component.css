@@ -1,0 +1,33 @@
+.title{
+  text-align: center;
+  margin: 0 auto;
+}
+
+.nav li a{
+  font-size: 14px;
+}
+
+.table tr {
+  height: 45px;
+}
+
+chart {
+  display: block
+}
+
+.stock-details {
+  font-size: 18px;
+}
+
+.detail-title {
+  vertical-align: top;
+
+}
+
+.addBorder {
+  margin: 20px;
+}
+
+.detail-button {
+  float: right;
+}

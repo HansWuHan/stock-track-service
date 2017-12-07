@@ -1,0 +1,137 @@
+<div class="panel panel-default" [@flyIn]="state" *ngIf="isSearch">
+  <div class="panel-heading" style="height: 45px">
+
+    <h3 class="panel-title title"><button class = "btn btn-default" style="float: left"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" (click)="goBack()"></span></button>Stock Details</h3>
+  </div>
+  <div class="panel-body">
+    <ul class="nav nav-pills">
+      <li  class="{{navs['current']}}" (click)="drawCurrent()"><a href="#"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> Current <span class="hidden-xs">Stock</span></a></li>
+      <li class="{{navs['history']}}" (click)="drawHistory()"><a href="#"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span> <span class="hidden-xs">Historical</span> Charts</a></li>
+      <li class="{{navs['news']}}" (click)="drawNews()"><a href="#"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> News <span class="hidden-xs">Feeds</span></a></li>
+    </ul>
+
+    <hr>
+  </div>
+
+  <div class="row" *ngIf=isCurrent>
+    <div class="col-md-6">
+      <div class = "detail-title addBorder">
+        <b class="stock-details">Stock Details</b>
+        <span class='detail-button'>
+          <button class = "btn btn-default" [disabled] = "!isLoaded" (click) ="like()"><span [ngStyle]="{'color': isLiked?'gold':'grey'}" [ngClass] = "isLiked?'glyphicon-star':'glyphicon-star-empty'" class="glyphicon" style=" font-size: 25px;"></span></button>
+          <button class = "btn btn-default" [disabled] = "!isLoaded" (click) ="share()"><img src="http://cs-server.usc.edu:45678/hw/hw8/images/facebook.png" height = "30px"> </button>
+        </span>
+      </div>
+
+      <div *ngIf = "!isLoaded && !isError" class = "addBorder">
+        <br><br><br><br><br><br><br><br>
+        <div class="progress" >
+          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+            <span class="sr-only">45% Complete</span>
+          </div>
+        </div>
+        <br><br><br><br><br><br><br>
+      </div>
+      <div class="alert alert-danger" role="alert" *ngIf = "isError">Error!Failed to get current stock data</div>
+      <table class="table table-striped" width="100%" *ngIf = "isLoaded">
+        <tr>
+          <th scope="row">Stock Ticker Symbol</th>
+          <td>{{stockData["price"]["info"]["symbol"]}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Last Price</th>
+          <td>{{stockData["price"]["info"]["lastPrice"]}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Change(Change Percent)</th>
+          <td [ngStyle]="{'color': isUp ? 'green' : 'red'}">{{stockData["price"]["info"]["change"]}} ({{stockData["price"]["info"]["changePercent"]}}%) <span><img src= {{img}} height= "15px"> </span></td>
+        </tr>
+        <tr>
+          <th scope="row">Time Stamp</th>
+          <td>{{stockData["price"]["info"]["timeStamp"]}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Open</th>
+          <td>{{stockData["price"]["info"]["open"]}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Close</th>
+          <td>{{stockData["price"]["info"]["close"]}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Day's Range</th>
+          <td>{{stockData["price"]["info"]["range"]}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Volume</th>
+          <td>{{numberWithCommas(stockData["price"]["info"]["volume"])}}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col-md-6" >
+      <ul class="nav nav-tabs">
+        <li class = '{{tabs["price"]}}' (click)="changeChart('price')" ><a href="#">Price</a></li>
+        <li class = '{{tabs["SMA"]}}' (click)="changeChart('SMA')"><a href="#">SMA</a></li>
+        <li class = '{{tabs["EMA"]}}' (click)="changeChart('EMA')"><a href="#">EMA</a></li>
+        <li class = '{{tabs["STOCH"]}}' (click)="changeChart('STOCH')"><a href="#">STOCH</a></li>
+        <li class = '{{tabs["RSI"]}}' (click)="changeChart('RSI')"><a href="#">RSI</a></li>
+        <li class = '{{tabs["ADX"]}}' (click)="changeChart('ADX')"><a href="#">ADX</a></li>
+        <li class = '{{tabs["CCI"]}}' (click)="changeChart('CCI')"><a href="#">CCI</a></li>
+        <li class = '{{tabs["BBANDS"]}}' (click)="changeChart('BBANDS')"><a href="#">BBANDS</a></li>
+        <li class = '{{tabs["MACD"]}}' (click)="changeChart('MACD')"><a href="#">MACD</a></li>
+      </ul>
+      <div class="alert alert-danger" role="alert" *ngIf = "isError || hasError[activeTab]">Error!Failed to get Price data</div>
+      <div *ngIf = "(!isReceived[activeTab] || !isLoaded) && isCurrent && !isError" class = "addBorder">
+        <br><br><br><br><br><br>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+            <span class="sr-only">45% Complete</span>
+          </div>
+        </div>
+        <br><br><br><br><br>
+      </div>
+
+      <div *ngIf = "isLoaded && isPrice"><chart [options]="chart"></chart></div>
+      <div *ngIf = "isLoaded && isReceived[activeTab] && !isPrice"><chart [options]="indicatorChart"></chart></div>
+    </div>
+  </div>
+
+  <chart type="StockChart"  [options]="history" *ngIf='isHistory && !isError && isLoaded'></chart>
+
+  <div class="alert alert-danger" role="alert" *ngIf = "isError && isHistory">Error!Failed to get historical charts data</div>
+  <div *ngIf = "!isLoaded && !isError && isHistory" class = "addBorder">
+    <br><br><br><br><br><br>
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+        <span class="sr-only">45% Complete</span>
+      </div>
+    </div>
+    <br><br><br><br><br>
+  </div>
+
+
+  <div *ngIf=isNews>
+    <div class="alert alert-danger" role="alert" *ngIf = "isError">Error!Failed to get news feed data</div>
+    <div *ngIf = "!isNewsLoaded && !isError && isNews" class = "addBorder">
+      <br><br><br><br><br><br>
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+          <span class="sr-only">45% Complete</span>
+        </div>
+      </div>
+      <br><br><br><br><br>
+    </div>
+    <div class = "well addBorder" *ngFor="let oneNew of news">
+      <div><a href="{{oneNew['link']}}" target="_blank" style="font-size: 16px"> {{oneNew["title"]}} </a></div>
+      <br>
+      <div><b>Author: {{oneNew['author']}}</b></div>
+      <div><b>Date: {{oneNew["date"]}}</b></div>
+    </div>
+  </div>
+
+
+</div>
+
+
+

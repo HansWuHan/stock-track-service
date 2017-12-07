@@ -1,0 +1,69 @@
+<div [@flyIn]="state">
+  <div class="panel panel-default"  *ngIf="!isSearch">
+    <div class="panel-heading" style="height: 45px">
+      <div class="panel-title">
+        <span>
+          <b>Favorite List</b>
+        </span>
+        <span style="float: right">
+          <label class = "hidden-xs">Automatic Refresh:</label>
+          <input type="checkbox" id = "refresh-toggle" data-toggle="toggle" data-size="normal"  >
+          {{render()}}
+          <button type="clear" class="btn btn-default" (click)="refresh()" ><span class="glyphicon glyphicon-refresh"></span></button>
+          <button type="" class="btn btn-default" (click)="goForward()" [disabled] = "loadStock == null"><span class="glyphicon glyphicon-chevron-right"></span></button>
+        </span>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-1">
+          <label>Sort by</label>
+        </div>
+        <div class="col-md-2">
+          <select class="form-control selecter" style="width: 150px" [(ngModel)]="selectedValue">
+            <option value = "Default">Default</option>
+            <option value = "symbol">Symbol</option>
+            <option value = "price">Price</option>
+            <option value = "change">Change</option>
+            <option value = "changePercent">Change Percent</option>
+            <option value = "volume">Volume</option>
+          </select>
+        </div>
+        <div class="col-md-1">
+          <label>Order</label>
+        </div>
+        <div class="col-md-2">
+          <select class="form-control selecter" style="width: 150px" [(ngModel)] = "isDescending"  [disabled] = "selectedValue == 'Default'">
+            <option value="false">Ascending</option>
+            <option value="true">Descending</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!-- Table -->
+    <div class="table-responsive">
+    <table class="table table-striped addBorder">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Stock Price</th>
+          <th>Change (Change Percent)</th>
+          <th>Volume</th>
+          <th> </th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let stock of likedStocks | orderBy: (selectedValue == 'Default'?'price':selectedValue) : (isDescending=='false'?false:true)">
+        <th scope="row"><a href="#" (click)="search(stock['symbol'])">{{stock["symbol"]}}</a></th>
+        <td>{{stock["price"]}}</td>
+        <td [ngStyle]="{'color': stock['change']>0?'green':'red'}"> {{stock["change"]}} ({{stock["changePercent"]}}%) <span><img [src] = "stock['change']>0?'http://cs-server.usc.edu:45678/hw/hw6/images/Green_Arrow_Up.png':'http://cs-server.usc.edu:45678/hw/hw6/images/Red_Arrow_Down.png'" height= "15px"> </span></td>
+        <td>{{numberWithCommas(stock["volume"])}}</td>
+        <td><button (click) = "removeFromList(stock['symbol'])" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button></td>
+      </tr>
+
+      </tbody>
+    </table>
+    </div>
+
+  </div>
+</div>

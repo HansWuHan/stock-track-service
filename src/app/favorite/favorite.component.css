@@ -1,0 +1,41 @@
+body {
+  background: url(http://cs-server.usc.edu:45678/hw/hw8/images/background.png);
+}
+
+.panel{
+  margin: 0 auto;
+}
+
+.panel-body {
+  padding: 20px 40px;
+}
+
+.selectpicker{
+  height: 30px;
+  width: 150px;
+}
+
+.title {
+  text-align: center;
+  font-size: 20px;
+  padding-bottom: 20px;
+}
+
+
+.refresh {
+  float: right;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.addBorder {
+  margin: 20px;
+}
+
+.selecter {
+  width : 50px;
+}
+
+
+
+

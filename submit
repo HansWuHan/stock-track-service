@@ -1,0 +1,1 @@
+submit -user csci571 -tag hw8 styles.css index.html app.js app.module.ts search.component.css search.component.html search.component.ts favorite.component.css favorite.component.html favorite.component.ts detail.component.css detail.component.html detail.component.ts
