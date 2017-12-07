@@ -1,5 +1,21 @@
 # Stockviewer
 
+[Demo](http://cs-server.usc.edu:35282/#)
+
+Real Time Stock Market Tracking Services – Angular4, Node.js, Bootstrap, HTML5, AWS
+
+• Implemented a multi-platform web service to search for stock data and news, save stocks and automatically refresh data 
+
+• Developed the responsive AJAX-based frontend with Angular4 and Bootstrap, achieved auto-complete and animations
+
+• Implemented MVC backend with Express.js, designed RESTful APIs to retrieve real-time stock data
+
+• Deployed node server on AWS Elastic Beanstalk, utilized HTML5 local storage to save liked stock list
+
+
+
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.9.
 
 ## Development server
