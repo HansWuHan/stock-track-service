@@ -1,6 +1,6 @@
 # Stockviewer
 
-[Demo](http://cs-server.usc.edu:35282/#)
+[Demo](http://elasticbeanstalk-us-west-1-623171048871.s3-website-us-west-1.amazonaws.com/)
 
 Real Time Stock Market Tracking Services – Angular4, Node.js, Bootstrap, HTML5, AWS
 
